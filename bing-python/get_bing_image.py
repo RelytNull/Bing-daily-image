@@ -1,5 +1,6 @@
 import requests
 import os
+import ctypes
 def make_get_request(url, params=None, headers=None):
     try:
         # Make the get request
@@ -33,14 +34,6 @@ def download_file(url, save_dir, filename=None):
         file_path = os.path.join(save_dir, filename)
         print(file_path)
 
-        # Determine the filename
-        # if filename is None:
-            # If no filename is provided, extract it from the URL
-        #    filename = os.path.join(save_dir, url.split('/')[-1])
-        # else:
-        #    filename = os.path.join(save_dir, filename)
-
-
         # Write the content to a file
         with open(file_path, 'wb') as file:
             for chunk in response.iter_content(chunk_size=8192):
@@ -53,6 +46,11 @@ def download_file(url, save_dir, filename=None):
     except Exception as err:
         print(f"An error has occurred: {err}")
 
+    return file_path
+
+def set_wallpaper(image_path):
+    SPI_SETDESKWALLPAPER = 20
+    ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, image_path, 0)
 
 
 
@@ -68,5 +66,5 @@ if __name__ == "__main__":
         # Get URL of image to download the image
         image = response_data.get('url')
     
-    print(image)
-    download_file(image, save_directory, filename=filename)
+    image_path =download_file(image, save_directory, filename=filename)
+    set_wallpaper(image_path)
