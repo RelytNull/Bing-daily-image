@@ -7,6 +7,13 @@ import (
 	"net/http"
 )
 
+/*************  ✨ Codeium Command ⭐  *************/
+// main is the entry point of the application. It sends a GET request to the
+// Bing image API, checks if the request was successful, reads the response
+// body, and prints it to the console. If any errors occur during the process,
+// the application logs the error and terminates.
+
+/******  743abd1c-01be-4a03-b2e4-470f6dd091ac  *******/
 func main() {
 	// Define URL of the API
 	url := "https://bing.biturl.top/"

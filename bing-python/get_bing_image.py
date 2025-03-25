@@ -55,7 +55,7 @@ def set_wallpaper(image_path):
 
 
 if __name__ == "__main__":
-    url = "https://bing.biturl.top/"
+    url = "https://bing.biturl.top/?mkt=en-US"
     params = {}
     headers = {}
     save_directory = "C:\Scripts"
