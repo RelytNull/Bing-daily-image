@@ -2,6 +2,9 @@ import requests
 import os
 import ctypes
 from bs4 import BeautifulSoup
+import tkinter as tk
+from tkinter import PhotoImage
+
 def make_get_request(url, params=None, headers=None):
     try:
         # Make the get request
@@ -59,7 +62,7 @@ def get_description(url):
     url = "https://bing.gifposter.com/"
 
     # Fetch the webpage
-    response = requests.get(url)
+    response = requests.get(url, verify=False)
 
     # Check if the request was successful
     if response.status_code == 200:
@@ -78,8 +81,47 @@ def get_description(url):
     else:
         print(f"Failed to fetch the webpage. Status code: {response.status_code}")
     
+    #print(meta_description['content'])
     return meta_description['content']
 
+def create_transparent_window(content):
+    # Create main windows
+    root = tk.Tk()
+
+    # Set Window Title
+    root.title("Bing Daily Image Description")
+
+    # Set Window size
+    window_width = 400
+    window_height = 200
+    # Set window size
+    root.geometry(f"{window_width}x{window_height}")
+
+    # Make window tranparent
+    root.wm_attributes("-alpha", 0.7)
+
+    # Make window always on bottom
+    root.wm_attributes("-topmost", False)
+    root.wm_attributes("-disabled", False)
+
+    label = tk.Label(root, text=content, bg="lightblue", font=("Helvetica", 10), wraplength=380, justify="center")
+    label.pack(expand=True, fill=tk.BOTH)
+
+    # Get the screen width and height
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    offset_x = 1500
+    # Position the window on the right monitor
+    # Assuming the right monitor is to the right of the primary monitor
+    # You may need to adjust this based on your display configuration
+    root.geometry(f"+{screen_width + offset_x}+100")  # Positioning the window (x=screen_width + offset, y=100)
+
+    # Set the window to be bottommost
+    hwnd = ctypes.windll.user32.FindWindowW(None, root.title())
+    ctypes.windll.user32.SetWindowPos(hwnd, 1, 0, 0, 0, 0, 0x0001 | 0x0002)  # SWP_NOSIZE | SWP_NOMOVE | HWND_BOTTOM
+
+    # Run main loop
+    root.mainloop()
 
 if __name__ == "__main__":
     url = "https://bing.biturl.top/?mkt=en-US"
@@ -93,5 +135,9 @@ if __name__ == "__main__":
         # Get URL of image to download the image
         image = response_data.get('url')
     
+    description = get_description(url)
+
+    create_transparent_window(description)
+
     image_path =download_file(image, save_directory, filename=filename)
     set_wallpaper(image_path)
