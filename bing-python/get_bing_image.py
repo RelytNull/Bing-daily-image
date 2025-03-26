@@ -114,7 +114,7 @@ def create_transparent_window(content):
     # Position the window on the right monitor
     # Assuming the right monitor is to the right of the primary monitor
     # You may need to adjust this based on your display configuration
-    root.geometry(f"+{screen_width + offset_x}+100")  # Positioning the window (x=screen_width + offset, y=100)
+    root.geometry(f"+{screen_width + offset_x}+10")  # Positioning the window (x=screen_width + offset, y=100)
 
     # Set the window to be bottommost
     hwnd = ctypes.windll.user32.FindWindowW(None, root.title())
