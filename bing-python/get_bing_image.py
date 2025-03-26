@@ -1,6 +1,7 @@
 import requests
 import os
 import ctypes
+from bs4 import BeautifulSoup
 def make_get_request(url, params=None, headers=None):
     try:
         # Make the get request
@@ -52,6 +53,32 @@ def set_wallpaper(image_path):
     SPI_SETDESKWALLPAPER = 20
     ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, image_path, 0)
 
+
+def get_description(url):
+    # URL to fetch
+    url = "https://bing.gifposter.com/"
+
+    # Fetch the webpage
+    response = requests.get(url)
+
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Parse the HTML content
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Find the meta tag element
+        meta_description = soup.find('meta', property='og:description')
+
+        # Extract the meta tag with property 'og:description'
+        if meta_description and 'content' in meta_description.attrs:
+            print(meta_description['content'])
+        else:
+            print("meta description not found.")
+    
+    else:
+        print(f"Failed to fetch the webpage. Status code: {response.status_code}")
+    
+    return meta_description['content']
 
 
 if __name__ == "__main__":
