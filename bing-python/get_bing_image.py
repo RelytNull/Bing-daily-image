@@ -4,6 +4,7 @@ import ctypes
 from bs4 import BeautifulSoup
 import tkinter as tk
 from tkinter import PhotoImage
+import time
 
 def make_get_request(url, params=None, headers=None):
     try:
@@ -84,6 +85,7 @@ def get_description(url):
     #print(meta_description['content'])
     return meta_description['content']
 
+
 def create_transparent_window(content):
     # Create main windows
     root = tk.Tk()
@@ -120,6 +122,14 @@ def create_transparent_window(content):
     hwnd = ctypes.windll.user32.FindWindowW(None, root.title())
     ctypes.windll.user32.SetWindowPos(hwnd, 1, 0, 0, 0, 0, 0x0001 | 0x0002)  # SWP_NOSIZE | SWP_NOMOVE | HWND_BOTTOM
 
+     # Function to close the application after 12 hours
+    def close_application():
+        print("Terminating the application after 12 hours.")
+        root.destroy()  # Close the Tkinter window
+
+    duration = 12 * 60 * 60 * 1000  # 12 hours in milliseconds
+    root.after(duration, close_application)
+
     # Run main loop
     root.mainloop()
 
@@ -135,9 +145,11 @@ if __name__ == "__main__":
         # Get URL of image to download the image
         image = response_data.get('url')
     
+    image_path = download_file(image, save_directory, filename=filename)
+    set_wallpaper(image_path)
+
     description = get_description(url)
 
     create_transparent_window(description)
 
-    image_path =download_file(image, save_directory, filename=filename)
-    set_wallpaper(image_path)
+    
