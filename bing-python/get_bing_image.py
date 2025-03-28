@@ -100,7 +100,7 @@ def create_transparent_window(content):
     root.geometry(f"{window_width}x{window_height}")
 
     # Make window tranparent
-    root.wm_attributes("-alpha", 0.7)
+    root.wm_attributes("-alpha", 0.4)
 
     # Make window always on bottom
     root.wm_attributes("-topmost", False)
